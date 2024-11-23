@@ -1,174 +1,120 @@
-# Keras: Deep Learning library for TensorFlow and Theano
+# Keras 3: Deep Learning for Humans
 
-[![Build Status](https://travis-ci.org/fchollet/keras.svg?branch=master)](https://travis-ci.org/fchollet/keras)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/fchollet/keras/blob/master/LICENSE)
+Keras 3 is a multi-backend deep learning framework, with support for JAX, TensorFlow, and PyTorch.
+Effortlessly build and train models for computer vision, natural language processing, audio processing,
+timeseries forecasting, recommender systems, etc.
 
-## You have just found Keras.
+- **Accelerated model development**: Ship deep learning solutions faster thanks to the high-level UX of Keras
+and the availability of easy-to-debug runtimes like PyTorch or JAX eager execution.
+- **State-of-the-art performance**: By picking the backend that is the fastest for your model architecture (often JAX!),
+leverage speedups ranging from 20% to 350% compared to other frameworks. [Benchmark here](https://keras.io/getting_started/benchmarks/).
+- **Datacenter-scale training**: Scale confidently from your laptop to large clusters of GPUs or TPUs.
 
-Keras is a high-level neural networks API, written in Python and capable of running on top of either [TensorFlow](https://github.com/tensorflow/tensorflow) or [Theano](https://github.com/Theano/Theano). It was developed with a focus on enabling fast experimentation. *Being able to go from idea to result with the least possible delay is key to doing good research.*
-
-Use Keras if you need a deep learning library that:
-
-- Allows for easy and fast prototyping (through user friendliness, modularity, and extensibility).
-- Supports both convolutional networks and recurrent networks, as well as combinations of the two.
-- Runs seamlessly on CPU and GPU.
-
-Read the documentation at [Keras.io](http://keras.io).
-
-Keras is compatible with: __Python 2.7-3.5__.
-
-
-------------------
-
-
-## Guiding principles
-
-- __User friendliness.__ Keras is an API designed for human beings, not machines. It puts user experience front and center. Keras follows best practices for reducing cognitive load: it offers consistent & simple APIs, it minimizes the number of user actions required for common use cases, and it provides clear and actionable feedback upon user error.
-
-- __Modularity.__ A model is understood as a sequence or a graph of standalone, fully-configurable modules that can be plugged together with as little restrictions as possible. In particular, neural layers, cost functions, optimizers, initialization schemes, activation functions, regularization schemes are all standalone modules that you can combine to create new models.
-
-- __Easy extensibility.__ New modules are simple to add (as new classes and functions), and existing modules provide ample examples. To be able to easily create new modules allows for total expressiveness, making Keras suitable for advanced research.
-
-- __Work with Python__. No separate models configuration files in a declarative format. Models are described in Python code, which is compact, easier to debug, and allows for ease of extensibility.
-
-
-------------------
-
-
-## Getting started: 30 seconds to Keras
-
-The core data structure of Keras is a __model__, a way to organize layers. The simplest type of model is the [`Sequential`](http://keras.io/getting-started/sequential-model-guide) model, a linear stack of layers. For more complex architectures, you should use the [Keras functional API](http://keras.io/getting-started/functional-api-guide), which allows to build arbitrary graphs of layers.
-
-Here is the `Sequential` model:
-
-```python
-from keras.models import Sequential
-
-model = Sequential()
-```
-
-Stacking layers is as easy as `.add()`:
-
-```python
-from keras.layers import Dense, Activation
-
-model.add(Dense(units=64, input_dim=100))
-model.add(Activation('relu'))
-model.add(Dense(units=10))
-model.add(Activation('softmax'))
-```
-
-Once your model looks good, configure its learning process with `.compile()`:
-
-```python
-model.compile(loss='categorical_crossentropy',
-              optimizer='sgd',
-              metrics=['accuracy'])
-```
-
-If you need to, you can further configure your optimizer. A core principle of Keras is to make things reasonably simple, while allowing the user to be fully in control when they need to (the ultimate control being the easy extensibility of the source code).
-```python
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.SGD(lr=0.01, momentum=0.9, nesterov=True))
-```
-
-You can now iterate on your training data in batches:
-
-```python
-# x_train and y_train are Numpy arrays --just like in the Scikit-Learn API.
-model.fit(x_train, y_train, epochs=5, batch_size=32)
-```
-
-Alternatively, you can feed batches to your model manually:
-
-```python
-model.train_on_batch(x_batch, y_batch)
-```
-
-Evaluate your performance in one line:
-
-```python
-loss_and_metrics = model.evaluate(x_test, y_test, batch_size=128)
-```
-
-Or generate predictions on new data:
-
-```python
-classes = model.predict(x_test, batch_size=128)
-```
-
-Building a question answering system, an image classification model, a Neural Turing Machine, or any other model is just as fast. The ideas behind deep learning are simple, so why should their implementation be painful?
-
-For a more in-depth tutorial about Keras, you can check out:
-
-- [Getting started with the Sequential model](http://keras.io/getting-started/sequential-model-guide)
-- [Getting started with the functional API](http://keras.io/getting-started/functional-api-guide)
-
-In the [examples folder](https://github.com/fchollet/keras/tree/master/examples) of the repository, you will find more advanced models: question-answering with memory networks, text generation with stacked LSTMs, etc.
-
-
-------------------
+Join nearly three million developers, from burgeoning startups to global enterprises, in harnessing the power of Keras 3.
 
 
 ## Installation
 
-Keras uses the following dependencies:
+### Install with pip
 
-- numpy, scipy
-- yaml
-- HDF5 and h5py (optional, required if you use model saving/loading functions)
-- Optional but recommended if you use CNNs: cuDNN.
+Keras 3 is available on PyPI as `keras`. Note that Keras 2 remains available as the `tf-keras` package.
 
+1. Install `keras`:
 
-*When using the TensorFlow backend:*
-
-- TensorFlow
-    - [See installation instructions](https://www.tensorflow.org/install/).
-
-*When using the Theano backend:*
-
-- Theano
-    - [See installation instructions](http://deeplearning.net/software/theano/install.html#install).
-
-To install Keras, `cd` to the Keras folder and run the install command:
-```sh
-sudo python setup.py install
+```
+pip install keras --upgrade
 ```
 
-You can also install Keras from PyPI:
-```sh
-sudo pip install keras
+2. Install backend package(s).
+
+To use `keras`, you should also install the backend of choice: `tensorflow`, `jax`, or `torch`.
+Note that `tensorflow` is required for using certain Keras 3 features: certain preprocessing layers
+as well as `tf.data` pipelines.
+
+### Local installation
+
+#### Minimal installation
+
+Keras 3 is compatible with Linux and MacOS systems. For Windows users, we recommend using WSL2 to run Keras.
+To install a local development version:
+
+1. Install dependencies:
+
+```
+pip install -r requirements.txt
 ```
 
-------------------
+2. Run installation command from the root directory.
+
+```
+python pip_build.py --install
+```
+
+3. Run API generation script when creating PRs that update `keras_export` public APIs:
+
+```
+./shell/api_gen.sh
+```
+
+#### Adding GPU support
+
+The `requirements.txt` file will install a CPU-only version of TensorFlow, JAX, and PyTorch. For GPU support, we also
+provide a separate `requirements-{backend}-cuda.txt` for TensorFlow, JAX, and PyTorch. These install all CUDA
+dependencies via `pip` and expect a NVIDIA driver to be pre-installed. We recommend a clean python environment for each
+backend to avoid CUDA version mismatches. As an example, here is how to create a Jax GPU environment with `conda`:
+
+```shell
+conda create -y -n keras-jax python=3.10
+conda activate keras-jax
+pip install -r requirements-jax-cuda.txt
+python pip_build.py --install
+```
+
+## Configuring your backend
+
+You can export the environment variable `KERAS_BACKEND` or you can edit your local config file at `~/.keras/keras.json`
+to configure your backend. Available backend options are: `"tensorflow"`, `"jax"`, `"torch"`. Example:
+
+```
+export KERAS_BACKEND="jax"
+```
+
+In Colab, you can do:
+
+```python
+import os
+os.environ["KERAS_BACKEND"] = "jax"
+
+import keras
+```
+
+**Note:** The backend must be configured before importing `keras`, and the backend cannot be changed after 
+the package has been imported.
+
+## Backwards compatibility
+
+Keras 3 is intended to work as a drop-in replacement for `tf.keras` (when using the TensorFlow backend). Just take your
+existing `tf.keras` code, make sure that your calls to `model.save()` are using the up-to-date `.keras` format, and you're
+done.
+
+If your `tf.keras` model does not include custom components, you can start running it on top of JAX or PyTorch immediately.
+
+If it does include custom components (e.g. custom layers or a custom `train_step()`), it is usually possible to convert it
+to a backend-agnostic implementation in just a few minutes.
+
+In addition, Keras models can consume datasets in any format, regardless of the backend you're using:
+you can train your models with your existing `tf.data.Dataset` pipelines or PyTorch `DataLoaders`.
+
+## Why use Keras 3?
+
+- Run your high-level Keras workflows on top of any framework -- benefiting at will from the advantages of each framework,
+e.g. the scalability and performance of JAX or the production ecosystem options of TensorFlow.
+- Write custom components (e.g. layers, models, metrics) that you can use in low-level workflows in any framework.
+    - You can take a Keras model and train it in a training loop written from scratch in native TF, JAX, or PyTorch.
+    - You can take a Keras model and use it as part of a PyTorch-native `Module` or as part of a JAX-native model function.
+- Make your ML code future-proof by avoiding framework lock-in.
+- As a PyTorch user: get access to power and usability of Keras, at last!
+- As a JAX user: get access to a fully-featured, battle-tested, well-documented modeling and training library.
 
 
-## Switching from TensorFlow to Theano
-
-By default, Keras will use TensorFlow as its tensor manipulation library. [Follow these instructions](http://keras.io/backend/) to configure the Keras backend.
-
-------------------
-
-
-## Support
-
-You can ask questions and join the development discussion:
-
-- On the [Keras Google group](https://groups.google.com/forum/#!forum/keras-users).
-- On the [Keras Slack channel](https://kerasteam.slack.com). Use [this link](https://keras-slack-autojoin.herokuapp.com/) to request an invitation to the channel.
-
-You can also post **bug reports and feature requests** (only) in [Github issues](https://github.com/fchollet/keras/issues). Make sure to read [our guidelines](https://github.com/fchollet/keras/blob/master/CONTRIBUTING.md) first.
-
-
-------------------
-
-
-## Why this name, Keras?
-
-Keras (κέρας) means _horn_ in Greek. It is a reference to a literary image from ancient Greek and Latin literature, first found in the _Odyssey_, where dream spirits (_Oneiroi_, singular _Oneiros_) are divided between those who deceive men with false visions, who arrive to Earth through a gate of ivory, and those who announce a future that will come to pass, who arrive through a gate of horn. It's a play on the words κέρας (horn) / κραίνω (fulfill), and ἐλέφας (ivory) / ἐλεφαίρομαι (deceive).
-
-Keras was initially developed as part of the research effort of project ONEIROS (Open-ended Neuro-Electronic Intelligent Robot Operating System).
-
->_"Oneiroi are beyond our unravelling --who can be sure what tale they tell? Not all that men look for comes to pass. Two gates there are that give passage to fleeting Oneiroi; one is made of horn, one of ivory. The Oneiroi that pass through sawn ivory are deceitful, bearing a message that will not be fulfilled; those that come out through polished horn have truth behind them, to be accomplished for men who see them."_ Homer, Odyssey 19. 562 ff (Shewring translation).
-
-------------------
+Read more in the [Keras 3 release announcement](https://keras.io/keras_3/).
